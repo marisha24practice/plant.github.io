@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Page with Store Availability</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+
+    nav {
+      background-color: #333;
+      color: white;
+      padding: 10px;
+    }
+
+    nav a {
+      color: white;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+
+    .product {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      width: 90%;
+    }
+
+    .store {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    .store:last-child {
+      border-bottom: none;
+    }
+
+    .store-actions {
+      margin-top: 8px;
+    }
+
+    .store-actions button {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a id="ourShopsBtn">Våre butikker</a>
+  </nav>
+
+  <div class="product">
+    <h1>Awesome Headphones</h1>
+    <p><strong>Price:</strong> 1299 NOK</p>
+    <p><strong>Availability:</strong> In Stock</p>
+
+    <button id="chooseShopBtn">Velg butikk</button><br />
+    <button id="inStockBtn">På lager i 25 butikker</button><br />
+    <button id="addToCartBtn">Legg i handlekurv</button>
+  </div>
+
+  <!-- Modal for Store List -->
+  <div id="storeModal" class="modal">
+    <div class="modal-content">
+      <h2>Velg butikk</h2>
+      <div class="store" data-store-id="store123" data-store-name="Oslo Center">
+        <strong>Oslo Center</strong><br />
+        Åpningstider: 09:00 - 20:00<br />
+        På lager: Ja
+        <div class="store-actions">
+          <button class="infoBtn">Info og åpningstider</button>
+          <button class="selectStoreBtn">Velg butikk</button>
+        </div>
+      </div>
+      <div class="store" data-store-id="store456" data-store-name="Bergen Sentrum">
+        <strong>Bergen Sentrum</strong><br />
+        Åpningstider: 10:00 - 18:00<br />
+        På lager: Lavt
+        <div class="store-actions">
+          <button class="infoBtn">Info og åpningstider</button>
+          <button class="selectStoreBtn">Velg butikk</button>
+        </div>
+      </div>
+      <br />
+      <button onclick="closeModal()">Lukk</button>
+    </div>
+  </div>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    const showModal = () => {
+      document.getElementById('storeModal').style.display = 'flex';
+    };
+
+    const closeModal = () => {
+      document.getElementById('storeModal').style.display = 'none';
+    };
+
+    const commonData = {
+      location_type: 'manual',
+      page_type: 'product_detail',
+      product_id: 'prod-567',
+      availability_status: 'in_stock',
+      stock_level: 'medium'
+    };
+
+    document.getElementById('ourShopsBtn').addEventListener('click', () => {
+      window.dataLayer.push({
+        event: 'find-store-button-clicked',
+        store_id: '',
+        store_name: '',
+        ...commonData
+      });
+      showModal();
+    });
+
+    document.getElementById('chooseShopBtn').addEventListener('click', () => {
+      window.dataLayer.push({
+        event: 'find-store-button-clicked',
+        store_id: '',
+        store_name: '',
+        ...commonData
+      });
+      showModal();
+    });
+
+    document.getElementById('inStockBtn').addEventListener('click', () => {
+      window.dataLayer.push({
+        event: 'in-stock-store-list-clicked',
+        store_id: '',
+        product_id: commonData.product_id,
+        availability_status: commonData.availability_status,
+        stock_level: commonData.stock_level
+      });
+      showModal();
+    });
+
+    document.getElementById('addToCartBtn').addEventListener('click', () => {
+      window.dataLayer.push({
+        event: 'store_availability_to_cart',
+        product_id: commonData.product_id,
+        store_id: 'store123'
+      });
+      alert('Product added to cart (tracked).');
+    });
+
+    // Handle clicks inside modal
+    document.querySelectorAll('.infoBtn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const storeEl = e.target.closest('.store');
+        const storeId = storeEl.dataset.storeId;
+        const storeName = storeEl.dataset.storeName;
+        window.dataLayer.push({
+          event: 'read-more-store-clicked',
+          store_id: storeId,
+          store_name: storeName
+        });
+        alert(`Read more for ${storeName} (tracked).`);
+      });
+    });
+
+    document.querySelectorAll('.selectStoreBtn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const storeEl = e.target.closest('.store');
+        const storeId = storeEl.dataset.storeId;
+        const storeName = storeEl.dataset.storeName;
+        window.dataLayer.push({
+          event: 'choose_shop_clicked',
+          store_id: storeId,
+          store_name: storeName,
+          source_event: 'info_panel'
+        });
+        alert(`${storeName} selected (tracked).`);
+        closeModal();
+      });
+    });
+  </script>
+
+</body>
+</html>
