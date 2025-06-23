@@ -85,6 +85,20 @@
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
+  <script>
+    document.getElementById('select-store').addEventListener('click', function () {
+      window.dataLayer.push({
+        event: 'find-store-button-clicked',
+        store_id: '123',
+        store_name: 'Oslo',
+        location_type: 'Manual',
+        page_type: 'product_page',
+        availability_status: 'in_stock'
+      });
+    });
+
+  </script>
+
   <nav>
     <a id="ourShopsBtn">Våre butikker</a>
   </nav>
