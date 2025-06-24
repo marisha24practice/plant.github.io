@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mock Store Availability with Navigation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f4f4f4;
+    }
+
+    .card {
+      background: #fff;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+      max-width: 600px;
+    }
+
+    button {
+      margin: 0.4rem 0.6rem 0 0;
+      padding: 10px 16px;
+      font-size: 15px;
+      background-color: #0070f3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005bb5;
+    }
+
+    .status {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 400px;
+      position: relative;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: none;
+      font-size: 20px;
+      color: #333;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Mock Product Detail Page</h1>
+
+  <!-- Main interaction area -->
+  <div class="card">
+    <h2>Store Availability Actions</h2>
+    <p>Simulate user interactions:</p>
+
+    <!-- Buttons -->
+    <button id="find-store">Velg butikk</button>
+    <button id="in-stock-store-list">På lager i 5 butikker</button>
+    <button id="read-more">Info og åpningstider</button>
+    <button id="choose-shop">Velg denne butikken</button>
+    <button id="add-to-cart">Legg i handlekurv</button>
+
+    <div id="status" class="status"></div>
+  </div>
+
+  <!-- Navigation Menu Button -->
+  <div class="card">
+    <h2>Navigation Menu</h2>
+    <p>Access store selection from site navigation:</p>
+    <button id="nav-open">Våre butikker</button>
+  </div>
+
+  <!-- Modal / Popup for Navigation -->
+  <div id="storeModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" id="closeModal">&times;</button>
+      <h3>Velg butikk fra navigasjon</h3>
+      <p>Select a store from the navigation menu</p>
+      <!-- Nested button inside popup -->
+      <button id="nav-select-store">Velg butikk (fra meny)</button>
+    </div>
+  </div>
+
+  <script>
+    const status = document.getElementById('status');
+
+    // Main product page interactions
+    document.getElementById('find-store').addEventListener('click', function () {
+      status.textContent = 'Clicked: Velg butikk (product page)';
+      console.log('Action: find-store-button-clicked');
+    });
+
+    document.getElementById('in-stock-store-list').addEventListener('click', function () {
+      status.textContent = 'Clicked: På lager i [xx] butikker';
+      console.log('Action: in-stock-store-list-clicked');
+    });
+
+    document.getElementById('read-more').addEventListener('click', function () {
+      status.textContent = 'Clicked: Info og åpningstider';
+      console.log('Action: read-more-store-clicked');
+    });
+
+    document.getElementById('choose-shop').addEventListener('click', function () {
+      status.textContent = 'Clicked: Velg denne butikken';
+      console.log('Action: choose_shop_clicked');
+    });
+
+    document.getElementById('add-to-cart').addEventListener('click', function () {
+      status.textContent = 'Clicked: Add to cart after store availability';
+      console.log('Action: store_availability_to_cart');
+    });
+
+    // Modal logic
+    const modal = document.getElementById('storeModal');
+    const openModal = document.getElementById('nav-open');
+    const closeModal = document.getElementById('closeModal');
+    const navSelectStore = document.getElementById('nav-select-store');
+
+    openModal.addEventListener('click', function () {
+      modal.style.display = 'block';
+      console.log('Opened navigation modal');
+    });
+
+    closeModal.addEventListener('click', function () {
+      modal.style.display = 'none';
+      console.log('Closed navigation modal');
+    });
+
+    navSelectStore.addEventListener('click', function () {
+      status.textContent = 'Clicked: Velg butikk (from navigation popup)';
+      console.log('Action: find-store-button-clicked (navigation menu)');
+      modal.style.display = 'none';
+    });
+
+    // Close modal if clicked outside
+    window.addEventListener('click', function (e) {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
